@@ -1,0 +1,1458 @@
+zabbix_export:
+  version: '5.2'
+  date: '2021-01-08T21:31:16Z'
+  groups:
+    -
+      name: Templates
+  templates:
+    -
+      template: 'Template SNMP Nimble'
+      name: 'Template SNMP Nimble'
+      templates:
+        -
+          name: 'ICMP Ping'
+      groups:
+        -
+          name: Templates
+      applications:
+        -
+          name: 'Latency - Read'
+        -
+          name: 'Latency - Write'
+        -
+          name: 'Performance - Global'
+        -
+          name: 'Performance - IO'
+        -
+          name: 'Performance - Throughput'
+        -
+          name: RawData
+        -
+          name: 'Volume Info'
+      items:
+        -
+          name: 'Snapshot Usage'
+          type: CALCULATED
+          key: diskSnapBytesUsed.0
+          delay: '90'
+          units: B
+          params: '(last("diskSnapBytesUsedHigh.0")*4294967296)+last("diskSnapBytesUsedLow.0")'
+          description: 'Total number of bytes used on disk for snapshots.'
+          applications:
+            -
+              name: 'Performance - Global'
+        -
+          name: diskSnapBytesUsedHigh.0
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.15.0
+          key: diskSnapBytesUsedHigh.0
+          delay: '90'
+          description: 'Total number of bytes used on disk for snapshots - high order bytes.'
+          applications:
+            -
+              name: RawData
+        -
+          name: diskSnapBytesUsedLow.0
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.14.0
+          key: diskSnapBytesUsedLow.0
+          delay: '90'
+          description: 'Total number of bytes used on disk for snapshots - low order bytes.'
+          applications:
+            -
+              name: RawData
+        -
+          name: 'Total Usage'
+          type: CALCULATED
+          key: diskTotalBytesUsed.0
+          delay: '90'
+          units: B
+          params: 'last("diskSnapBytesUsed.0")+last("diskVolBytesUsed.0")'
+          description: 'Total number of bytes used on disk.'
+          applications:
+            -
+              name: 'Performance - Global'
+        -
+          name: 'Data Usage'
+          type: CALCULATED
+          key: diskVolBytesUsed.0
+          delay: '90'
+          units: B
+          params: '(last("diskVolBytesUsedHigh.0")*4294967296)+last("diskVolBytesUsedLow.0")'
+          description: 'Total number of bytes used on disk for volumes.'
+          applications:
+            -
+              name: 'Performance - Global'
+        -
+          name: diskVolBytesUsedHigh.0
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.13.0
+          key: diskVolBytesUsedHigh.0
+          delay: '90'
+          description: 'Total number of bytes used on disk for volumes - high order bytes.'
+          applications:
+            -
+              name: RawData
+        -
+          name: diskVolBytesUsedLow.0
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.12.0
+          key: diskVolBytesUsedLow.0
+          delay: '90'
+          description: 'Total number of bytes used on disk for volumes - low order bytes.'
+          applications:
+            -
+              name: RawData
+        -
+          name: 'Non-sequential Read IOps'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.16.0
+          key: ioNonseqReadHits
+          delay: '90'
+          units: IOps
+          description: 'Average number of cached non-sequential read IOps.'
+          applications:
+            -
+              name: 'Performance - Global'
+          preprocessing:
+            -
+              type: CHANGE_PER_SECOND
+              parameters:
+                - ''
+        -
+          name: 'Read IOps'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.2.0
+          key: ioReads
+          delay: '90'
+          units: IOps
+          description: 'Average number of read IOps (sequential and random).'
+          applications:
+            -
+              name: 'Performance - Global'
+          preprocessing:
+            -
+              type: CHANGE_PER_SECOND
+              parameters:
+                - ''
+        -
+          name: 'Bytes Read'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.8.0
+          key: ioReadsBytes
+          delay: '90'
+          units: Bps
+          description: 'Average number of bytes read (sequential and random).'
+          applications:
+            -
+              name: 'Performance - Global'
+          preprocessing:
+            -
+              type: CHANGE_PER_SECOND
+              parameters:
+                - ''
+        -
+          name: 'Sequential Read IOps'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.3.0
+          key: ioSeqReads
+          delay: '90'
+          units: IOps
+          description: 'Average number of sequential read IOps.'
+          applications:
+            -
+              name: 'Performance - Global'
+          preprocessing:
+            -
+              type: CHANGE_PER_SECOND
+              parameters:
+                - ''
+        -
+          name: 'Sequential Bytes Read'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.9.0
+          key: ioSeqReadsBytes
+          delay: '90'
+          value_type: FLOAT
+          units: Bps
+          description: 'Average number of sequential bytes read pr. second.'
+          applications:
+            -
+              name: 'Performance - Global'
+          preprocessing:
+            -
+              type: CHANGE_PER_SECOND
+              parameters:
+                - ''
+        -
+          name: 'Sequential Bytes Written'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.11.0
+          key: ioSeqWriteBytes
+          delay: '90'
+          units: Bps
+          description: 'Average number of sequential bytes written pr. second.'
+          applications:
+            -
+              name: 'Performance - Global'
+          preprocessing:
+            -
+              type: CHANGE_PER_SECOND
+              parameters:
+                - ''
+        -
+          name: 'Sequential Write IOps'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.5.0
+          key: ioSeqWrites
+          delay: '60'
+          units: IOps
+          description: 'Average number of write IOps (sequential and random).'
+          applications:
+            -
+              name: 'Performance - Global'
+          preprocessing:
+            -
+              type: CHANGE_PER_SECOND
+              parameters:
+                - ''
+        -
+          name: 'Bytes Written'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.10.0
+          key: ioWriteBytes
+          delay: '90'
+          units: Bps
+          description: 'Average number of bytes written pr. second.'
+          applications:
+            -
+              name: 'Performance - Global'
+          preprocessing:
+            -
+              type: CHANGE_PER_SECOND
+              parameters:
+                - ''
+        -
+          name: 'Writes IOps'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.37447.1.3.4.0
+          key: ioWrites
+          delay: '60'
+          units: IOps
+          description: 'Average number of write IOps (sequential and random).'
+          applications:
+            -
+              name: 'Performance - Global'
+          preprocessing:
+            -
+              type: CHANGE_PER_SECOND
+              parameters:
+                - ''
+      discovery_rules:
+        -
+          name: 'Nimble Volumes'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},.1.3.6.1.4.1.37447.1.2.1.3]'
+          key: discovery.volName
+          delay: '3600'
+          lifetime: 7d
+          item_prototypes:
+            -
+              name: '{#SNMPVALUE} - Snapshot Usage'
+              type: CALCULATED
+              key: 'volDiskSnapBytesUsed.[{#SNMPVALUE}]'
+              delay: '90'
+              units: B
+              params: '(last("volDiskSnapBytesUsedHigh.[{#SNMPINDEX}]")*4294967296)+last("volDiskSnapBytesUsedLow.[{#SNMPINDEX}]")'
+              applications:
+                -
+                  name: 'Volume Info'
+            -
+              name: 'volDiskSnapBytesUsedHigh.{#SNMPINDEX}'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.55.{#SNMPINDEX}'
+              key: 'volDiskSnapBytesUsedHigh.[{#SNMPINDEX}]'
+              delay: '90'
+              applications:
+                -
+                  name: RawData
+            -
+              name: 'volDiskSnapBytesUsedLow.{#SNMPINDEX}'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.54.{#SNMPINDEX}'
+              key: 'volDiskSnapBytesUsedLow.[{#SNMPINDEX}]'
+              delay: '90'
+              applications:
+                -
+                  name: RawData
+            -
+              name: '{#SNMPVALUE} - Total Usage'
+              type: CALCULATED
+              key: 'volDiskVolBytesUsed.[{#SNMPVALUE}]'
+              delay: '90'
+              units: B
+              params: 'last("volDiskSnapBytesUsed.[{#SNMPVALUE}]")+last("volUsageLow.[{#SNMPVALUE}]")'
+              applications:
+                -
+                  name: 'Volume Info'
+            -
+              name: '{#SNMPVALUE} - Space Available'
+              type: CALCULATED
+              key: 'volDiskVolBytesUsedPct.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: '%'
+              params: '((last("volSizeLow.[{#SNMPVALUE}]")-last("volDiskVolBytesUsed.[{#SNMPVALUE}]"))/last("volSizeLow.[{#SNMPVALUE}]"))*100'
+              applications:
+                -
+                  name: 'Volume Info'
+              trigger_prototypes:
+                -
+                  expression: '{last()}<10'
+                  name: '{HOST.NAME}: Available Space on "{#SNMPVALUE}" is 10% or Less'
+                  priority: AVERAGE
+                -
+                  expression: '{last()}<20'
+                  name: '{HOST.NAME}: Available Space on "{#SNMPVALUE}" is 20% or Less'
+                  priority: WARNING
+            -
+              name: '{#SNMPVALUE} - Non-sequential Read IOps From Memory'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.19.{#SNMPINDEX}'
+              key: 'volIoNonseqReadMemHits.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Average number of non-sequential read I/O''s served from memory.'
+              applications:
+                -
+                  name: 'Performance - IO'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - Non-sequential Read IOps From SSD'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.20.{#SNMPINDEX}'
+              key: 'volIoNonseqReadSSDHits.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Average number of non-sequential read I/O''s served from SSD.'
+              applications:
+                -
+                  name: 'Performance - IO'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - Non-sequential Read IOps'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.18.{#SNMPINDEX}'
+              key: 'volIoNonseqReadTotalHits.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Average number of total non-sequential read I/O''s.'
+              applications:
+                -
+                  name: 'Performance - IO'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency > 20ms'
+              type: CALCULATED
+              key: 'volIoPctReadLatencyGt20ms.[{#SNMPINDEX}]'
+              delay: '90'
+              value_type: FLOAT
+              units: '%'
+              params: '(last("volIoReadLatency20mTo50m.[{#SNMPVALUE}]")+last("volIoReadLatency50mTo100m.[{#SNMPVALUE}]")+last("volIoReadLatency100mTo200m.[{#SNMPVALUE}]")+last("volIoReadLatency200mTo500m.[{#SNMPVALUE}]")+last("volIoReadLatency500mTomax.[{#SNMPVALUE}]"))/((last("volIoReadLatency0uTo100u.[{#SNMPVALUE}]")+last("volIoReadLatency100uTo200u.[{#SNMPVALUE}]")+last("volIoReadLatency200uTo500u.[{#SNMPVALUE}]")+last("volIoReadLatency500uTo1m.[{#SNMPVALUE}]")+last("volIoReadLatency1mTo2m.[{#SNMPVALUE}]")+last("volIoReadLatency2mTo5m.[{#SNMPVALUE}]")+last("volIoReadLatency5mTo10m.[{#SNMPVALUE}]")+last("volIoReadLatency10mTo20m.[{#SNMPVALUE}]")+last("volIoReadLatency20mTo50m.[{#SNMPVALUE}]")+last("volIoReadLatency50mTo100m.[{#SNMPVALUE}]")+last("volIoReadLatency100mTo200m.[{#SNMPVALUE}]")+last("volIoReadLatency200mTo500m.[{#SNMPVALUE}]")+last("volIoReadLatency500mTomax.[{#SNMPVALUE}]"))+0.00001)*100'
+              applications:
+                -
+                  name: 'Latency - Read'
+              trigger_prototypes:
+                -
+                  expression: '{avg(1800)}>25'
+                  name: '{HOST.NAME}: on "{#SNMPVALUE}" >25% of Read Latency is Above 20ms'
+                  priority: WARNING
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency > 50ms'
+              type: CALCULATED
+              key: 'volIoPctReadLatencyGt50ms.[{#SNMPINDEX}]'
+              delay: '90'
+              value_type: FLOAT
+              units: '%'
+              params: '(last("volIoReadLatency50mTo100m.[{#SNMPVALUE}]")+last("volIoReadLatency100mTo200m.[{#SNMPVALUE}]")+last("volIoReadLatency200mTo500m.[{#SNMPVALUE}]")+last("volIoReadLatency500mTomax.[{#SNMPVALUE}]"))/((last("volIoReadLatency0uTo100u.[{#SNMPVALUE}]")+last("volIoReadLatency100uTo200u.[{#SNMPVALUE}]")+last("volIoReadLatency200uTo500u.[{#SNMPVALUE}]")+last("volIoReadLatency500uTo1m.[{#SNMPVALUE}]")+last("volIoReadLatency1mTo2m.[{#SNMPVALUE}]")+last("volIoReadLatency2mTo5m.[{#SNMPVALUE}]")+last("volIoReadLatency5mTo10m.[{#SNMPVALUE}]")+last("volIoReadLatency10mTo20m.[{#SNMPVALUE}]")+last("volIoReadLatency20mTo50m.[{#SNMPVALUE}]")+last("volIoReadLatency50mTo100m.[{#SNMPVALUE}]")+last("volIoReadLatency100mTo200m.[{#SNMPVALUE}]")+last("volIoReadLatency200mTo500m.[{#SNMPVALUE}]")+last("volIoReadLatency500mTomax.[{#SNMPVALUE}]"))+0.00001)*100'
+              applications:
+                -
+                  name: 'Latency - Read'
+              trigger_prototypes:
+                -
+                  expression: '{avg(1800)}>25'
+                  name: '{HOST.NAME}: on "{#SNMPVALUE}" >25% of Read Latency is Above 50ms'
+                  priority: AVERAGE
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency > 20ms'
+              type: CALCULATED
+              key: 'volIoPctWriteLatencyGt20ms.[{#SNMPINDEX}]'
+              delay: '90'
+              value_type: FLOAT
+              units: '%'
+              params: '(last("volIoWriteLatency20mTo50m.[{#SNMPVALUE}]")+last("volIoWriteLatency50mTo100m.[{#SNMPVALUE}]")+last("volIoWriteLatency100mTo200m.[{#SNMPVALUE}]")+last("volIoWriteLatency200mTo500m.[{#SNMPVALUE}]")+last("volIoWriteLatency500mTomax.[{#SNMPVALUE}]"))/((last("volIoWriteLatency0uTo100u.[{#SNMPVALUE}]")+last("volIoWriteLatency100uTo200u.[{#SNMPVALUE}]")+last("volIoWriteLatency200uTo500u.[{#SNMPVALUE}]")+last("volIoWriteLatency500uTo1m.[{#SNMPVALUE}]")+last("volIoWriteLatency1mTo2m.[{#SNMPVALUE}]")+last("volIoWriteLatency2mTo5m.[{#SNMPVALUE}]")+last("volIoWriteLatency5mTo10m.[{#SNMPVALUE}]")+last("volIoWriteLatency10mTo20m.[{#SNMPVALUE}]")+last("volIoWriteLatency20mTo50m.[{#SNMPVALUE}]")+last("volIoWriteLatency50mTo100m.[{#SNMPVALUE}]")+last("volIoWriteLatency100mTo200m.[{#SNMPVALUE}]")+last("volIoWriteLatency200mTo500m.[{#SNMPVALUE}]")+last("volIoWriteLatency500mTomax.[{#SNMPVALUE}]"))+0.00001)*100'
+              applications:
+                -
+                  name: 'Latency - Write'
+              trigger_prototypes:
+                -
+                  expression: '{avg(1800)}>25'
+                  name: '{HOST.NAME}: on "{#SNMPVALUE}" >25% of Write Latency is Above 20ms'
+                  priority: WARNING
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency > 50ms'
+              type: CALCULATED
+              key: 'volIoPctWriteLatencyGt50ms.[{#SNMPINDEX}]'
+              delay: '90'
+              value_type: FLOAT
+              units: '%'
+              params: '(last("volIoWriteLatency50mTo100m.[{#SNMPVALUE}]")+last("volIoWriteLatency100mTo200m.[{#SNMPVALUE}]")+last("volIoWriteLatency200mTo500m.[{#SNMPVALUE}]")+last("volIoWriteLatency500mTomax.[{#SNMPVALUE}]"))/((last("volIoWriteLatency0uTo100u.[{#SNMPVALUE}]")+last("volIoWriteLatency100uTo200u.[{#SNMPVALUE}]")+last("volIoWriteLatency200uTo500u.[{#SNMPVALUE}]")+last("volIoWriteLatency500uTo1m.[{#SNMPVALUE}]")+last("volIoWriteLatency1mTo2m.[{#SNMPVALUE}]")+last("volIoWriteLatency2mTo5m.[{#SNMPVALUE}]")+last("volIoWriteLatency5mTo10m.[{#SNMPVALUE}]")+last("volIoWriteLatency10mTo20m.[{#SNMPVALUE}]")+last("volIoWriteLatency20mTo50m.[{#SNMPVALUE}]")+last("volIoWriteLatency50mTo100m.[{#SNMPVALUE}]")+last("volIoWriteLatency100mTo200m.[{#SNMPVALUE}]")+last("volIoWriteLatency200mTo500m.[{#SNMPVALUE}]")+last("volIoWriteLatency500mTomax.[{#SNMPVALUE}]"))+0.00001)*100'
+              applications:
+                -
+                  name: 'Latency - Write'
+              trigger_prototypes:
+                -
+                  expression: '{avg(1800)}>25'
+                  name: '{HOST.NAME}: on "{#SNMPVALUE}" >25% of Write Latency is Above 50ms'
+                  priority: AVERAGE
+            -
+              name: '{#SNMPVALUE} - Bps Read'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.15.{#SNMPINDEX}'
+              key: 'volIoReadBytes.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: Bps
+              applications:
+                -
+                  name: 'Performance - Throughput'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 0.0-0.1ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.21.{#SNMPINDEX}'
+              key: 'volIoReadLatency0uTo100u.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 0 and 100 microseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 1.0-2.0ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.25.{#SNMPINDEX}'
+              key: 'volIoReadLatency1mTo2m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 1 and 2 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 2.0-5.0ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.26.{#SNMPINDEX}'
+              key: 'volIoReadLatency2mTo5m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 2 and 5 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 5.0-10ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.27.{#SNMPINDEX}'
+              key: 'volIoReadLatency5mTo10m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 5 and 10 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 10-20ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.28.{#SNMPINDEX}'
+              key: 'volIoReadLatency10mTo20m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 10 and 20 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 20-50ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.29.{#SNMPINDEX}'
+              key: 'volIoReadLatency20mTo50m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 20 and 50 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 50-100ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.30.{#SNMPINDEX}'
+              key: 'volIoReadLatency50mTo100m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 50 and 100 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 100-200ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.31.{#SNMPINDEX}'
+              key: 'volIoReadLatency100mTo200m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 100 and 200 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 0.1-0.2ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.22.{#SNMPINDEX}'
+              key: 'volIoReadLatency100uTo200u.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 100 and 200 microseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 200-500ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.32.{#SNMPINDEX}'
+              key: 'volIoReadLatency200mTo500m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 200 and 500 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 0.2-0.5ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.23.{#SNMPINDEX}'
+              key: 'volIoReadLatency200uTo500u.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 200 and 500 microseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 500->'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.33.{#SNMPINDEX}'
+              key: 'volIoReadLatency500mTomax.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency above 500 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read Latency 0.5-1.0ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.24.{#SNMPINDEX}'
+              key: 'volIoReadLatency500uTo1m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of read I/O''s with latency between 0.5 and 1 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Read'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Read'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.13.{#SNMPINDEX}'
+              key: 'volIoReads.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Average number of Read IOps (sequential and random).'
+              applications:
+                -
+                  name: 'Performance - IO'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - Sequential Read IOps'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.16.{#SNMPINDEX}'
+              key: 'volIoSeqReads.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Average number of sequential read IOps.'
+              applications:
+                -
+                  name: 'Performance - IO'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - Sequential Bps Read'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.17.{#SNMPINDEX}'
+              key: 'volIoSeqReadsBytes.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: Bps
+              description: 'Average number of sequential bytes read pr. second.'
+              applications:
+                -
+                  name: 'Performance - Throughput'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - Sequential Bps Write'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.38.{#SNMPINDEX}'
+              key: 'volIoSeqWriteBytes.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: Bps
+              description: 'Average number of sequential bytes written pr. second.'
+              applications:
+                -
+                  name: 'Performance - Throughput'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - Sequential Write IOps'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.37.{#SNMPINDEX}'
+              key: 'volIoSeqWrites.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Average number of sequential write IOps.'
+              applications:
+                -
+                  name: 'Performance - IO'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - Bps Write'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.36.{#SNMPINDEX}'
+              key: 'volIoWriteBytes.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: Bps
+              applications:
+                -
+                  name: 'Performance - Throughput'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 0.0-0.1ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.39.{#SNMPINDEX}'
+              key: 'volIoWriteLatency0uTo100u.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency between 0 and 100 microseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 1.0-2.0ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.43.{#SNMPINDEX}'
+              key: 'volIoWriteLatency1mTo2m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency between 1 and 2 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 2.0-5.0ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.44.{#SNMPINDEX}'
+              key: 'volIoWriteLatency2mTo5m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency between 2 and 5 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 5.0-10ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.45.{#SNMPINDEX}'
+              key: 'volIoWriteLatency5mTo10m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency between 5 and 10 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 10-20ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.46.{#SNMPINDEX}'
+              key: 'volIoWriteLatency10mTo20m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency between 10 and 20 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 20-50ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.47.{#SNMPINDEX}'
+              key: 'volIoWriteLatency20mTo50m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency between 20 and 50 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 50-100ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.48.{#SNMPINDEX}'
+              key: 'volIoWriteLatency50mTo100m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency between 50 and 100 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 100-200ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.49.{#SNMPINDEX}'
+              key: 'volIoWriteLatency100mTo200m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency between 100 and 200 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 0.1-0.2ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.40.{#SNMPINDEX}'
+              key: 'volIoWriteLatency100uTo200u.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency between 100 and 200 microseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 200-500ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.50.{#SNMPINDEX}'
+              key: 'volIoWriteLatency200mTo500m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of Write I/O''s with latency between 200 and 500 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 0.2-0.5ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.41.{#SNMPINDEX}'
+              key: 'volIoWriteLatency200uTo500u.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency between 200 and 500 microseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 500->'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.51.{#SNMPINDEX}'
+              key: 'volIoWriteLatency500mTomax.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency above 500 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write Latency 0.5-1.0ms'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.42.{#SNMPINDEX}'
+              key: 'volIoWriteLatency500uTo1m.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Number of write I/O''s with latency between 0.5 and 1 milliseconds.'
+              applications:
+                -
+                  name: 'Latency - Write'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - IOps Write'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.34.{#SNMPINDEX}'
+              key: 'volIoWrites.[{#SNMPVALUE}]'
+              delay: '90'
+              value_type: FLOAT
+              units: IOps
+              description: 'Average number of Write IOps (sequential and random).'
+              applications:
+                -
+                  name: 'Performance - IO'
+              preprocessing:
+                -
+                  type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+            -
+              name: '{#SNMPVALUE} - iSCSI Connections'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.11.{#SNMPINDEX}'
+              key: 'volNumConnections.[{#SNMPVALUE}]'
+              delay: '300'
+              applications:
+                -
+                  name: 'Volume Info'
+            -
+              name: '{#SNMPVALUE} - Online State'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.10.{#SNMPINDEX}'
+              key: 'volOnline.[{#SNMPVALUE}]'
+              delay: '90'
+              description: 'Volume Online (true or false).'
+              applications:
+                -
+                  name: 'Volume Info'
+              valuemap:
+                name: NimbleVolumeState
+              trigger_prototypes:
+                -
+                  expression: '{last()}=2'
+                  name: '{HOST.NAME}: "{#SNMPVALUE}" Online State is {ITEM.VALUE1}'
+                  priority: AVERAGE
+            -
+              name: '{#SNMPVALUE} - Total Size'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.4.{#SNMPINDEX}'
+              key: 'volSizeLow.[{#SNMPVALUE}]'
+              delay: '900'
+              units: B
+              description: 'Maximum defined size of a volume in bytes.'
+              applications:
+                -
+                  name: 'Volume Info'
+              preprocessing:
+                -
+                  type: MULTIPLIER
+                  parameters:
+                    - '1048576'
+            -
+              name: '{#SNMPVALUE} - Data Usage'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.37447.1.2.1.6.{#SNMPINDEX}'
+              key: 'volUsageLow.[{#SNMPVALUE}]'
+              delay: '90'
+              units: B
+              description: 'Current number of bytes a volume is using.'
+              applications:
+                -
+                  name: 'Volume Info'
+              preprocessing:
+                -
+                  type: MULTIPLIER
+                  parameters:
+                    - '1048576'
+          graph_prototypes:
+            -
+              name: '{#SNMPVALUE} - IOps'
+              ymin_type_1: FIXED
+              graph_items:
+                -
+                  drawtype: GRADIENT_LINE
+                  color: 0000C8
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReads.[{#SNMPVALUE}]'
+                -
+                  sortorder: '1'
+                  drawtype: GRADIENT_LINE
+                  color: 00C800
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWrites.[{#SNMPVALUE}]'
+                -
+                  sortorder: '2'
+                  color: C800C8
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoSeqReads.[{#SNMPVALUE}]'
+                -
+                  sortorder: '3'
+                  drawtype: BOLD_LINE
+                  color: C8C800
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoSeqWrites.[{#SNMPVALUE}]'
+            -
+              name: '{#SNMPVALUE} - IOps Latency > 20 & 50ms'
+              show_triggers: 'NO'
+              ymin_type_1: FIXED
+              graph_items:
+                -
+                  color: 0000C8
+                  calc_fnc: MAX
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoPctReadLatencyGt20ms.[{#SNMPINDEX}]'
+                -
+                  sortorder: '1'
+                  color: 00C8C8
+                  calc_fnc: MAX
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoPctReadLatencyGt50ms.[{#SNMPINDEX}]'
+                -
+                  sortorder: '2'
+                  color: 00C800
+                  calc_fnc: MAX
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoPctWriteLatencyGt20ms.[{#SNMPINDEX}]'
+                -
+                  sortorder: '3'
+                  color: C8C800
+                  calc_fnc: MAX
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoPctWriteLatencyGt50ms.[{#SNMPINDEX}]'
+            -
+              name: '{#SNMPVALUE} - Latency (Read)'
+              height: '300'
+              show_work_period: 'NO'
+              show_triggers: 'NO'
+              type: STACKED
+              ymin_type_1: FIXED
+              graph_items:
+                -
+                  color: '009900'
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency0uTo100u.[{#SNMPVALUE}]'
+                -
+                  sortorder: '1'
+                  color: 00BB00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency100uTo200u.[{#SNMPVALUE}]'
+                -
+                  sortorder: '2'
+                  color: 00DD00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency200uTo500u.[{#SNMPVALUE}]'
+                -
+                  sortorder: '3'
+                  color: 00FF00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency500uTo1m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '4'
+                  color: 91FF00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency1mTo2m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '5'
+                  color: DAFF00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency2mTo5m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '6'
+                  color: FFFF00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency5mTo10m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '7'
+                  color: FFE700
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency10mTo20m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '8'
+                  color: FFD000
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency20mTo50m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '9'
+                  color: FFA200
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency50mTo100m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '10'
+                  color: FF7F00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency100mTo200m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '11'
+                  color: FF4300
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency200mTo500m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '12'
+                  color: FF0000
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency500mTomax.[{#SNMPVALUE}]'
+            -
+              name: '{#SNMPVALUE} - Latency (Write)'
+              height: '300'
+              show_work_period: 'NO'
+              show_triggers: 'NO'
+              type: STACKED
+              ymin_type_1: FIXED
+              graph_items:
+                -
+                  color: '009900'
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency0uTo100u.[{#SNMPVALUE}]'
+                -
+                  sortorder: '1'
+                  color: 00BB00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency100uTo200u.[{#SNMPVALUE}]'
+                -
+                  sortorder: '2'
+                  color: 00DD00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency200uTo500u.[{#SNMPVALUE}]'
+                -
+                  sortorder: '3'
+                  color: 00FF00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadLatency500uTo1m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '4'
+                  color: 91FF00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency1mTo2m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '5'
+                  color: DAFF00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency2mTo5m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '6'
+                  color: FFFF00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency5mTo10m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '7'
+                  color: FFE700
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency10mTo20m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '8'
+                  color: FFD000
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency20mTo50m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '9'
+                  color: FFA200
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency50mTo100m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '10'
+                  color: FF7F00
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency100mTo200m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '11'
+                  color: FF4300
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency200mTo500m.[{#SNMPVALUE}]'
+                -
+                  sortorder: '12'
+                  color: FF0000
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteLatency500mTomax.[{#SNMPVALUE}]'
+            -
+              name: '{#SNMPVALUE} - Throughput'
+              ymin_type_1: FIXED
+              graph_items:
+                -
+                  drawtype: GRADIENT_LINE
+                  color: 0000C8
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoReadBytes.[{#SNMPVALUE}]'
+                -
+                  sortorder: '1'
+                  drawtype: GRADIENT_LINE
+                  color: 00C800
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoWriteBytes.[{#SNMPVALUE}]'
+                -
+                  sortorder: '2'
+                  color: C800C8
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoSeqReadsBytes.[{#SNMPVALUE}]'
+                -
+                  sortorder: '3'
+                  drawtype: BOLD_LINE
+                  color: C8C800
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volIoSeqWriteBytes.[{#SNMPVALUE}]'
+            -
+              name: '{#SNMPVALUE} - Volume Usage'
+              width: '600'
+              height: '340'
+              yaxismax: '0'
+              show_work_period: 'NO'
+              show_triggers: 'NO'
+              type: PIE
+              show_3d: 'YES'
+              graph_items:
+                -
+                  color: 0000C8
+                  type: GRAPH_SUM
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volSizeLow.[{#SNMPVALUE}]'
+                -
+                  sortorder: '1'
+                  color: 00C8C8
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volUsageLow.[{#SNMPVALUE}]'
+                -
+                  sortorder: '2'
+                  color: 00C800
+                  item:
+                    host: 'Template SNMP Nimble'
+                    key: 'volDiskSnapBytesUsed.[{#SNMPVALUE}]'
+  graphs:
+    -
+      name: IOps
+      graph_items:
+        -
+          drawtype: GRADIENT_LINE
+          color: 0000C8
+          item:
+            host: 'Template SNMP Nimble'
+            key: ioReads
+        -
+          sortorder: '1'
+          drawtype: GRADIENT_LINE
+          color: 00C800
+          item:
+            host: 'Template SNMP Nimble'
+            key: ioWrites
+        -
+          sortorder: '2'
+          color: C800C8
+          item:
+            host: 'Template SNMP Nimble'
+            key: ioNonseqReadHits
+        -
+          sortorder: '3'
+          color: 00C8C8
+          item:
+            host: 'Template SNMP Nimble'
+            key: ioSeqReads
+        -
+          sortorder: '4'
+          color: C8C800
+          item:
+            host: 'Template SNMP Nimble'
+            key: ioSeqWrites
+    -
+      name: 'Storage Usage'
+      width: '600'
+      height: '340'
+      yaxismax: '0'
+      show_work_period: 'NO'
+      show_triggers: 'NO'
+      type: PIE
+      show_3d: 'YES'
+      graph_items:
+        -
+          color: 0000C8
+          type: GRAPH_SUM
+          item:
+            host: 'Template SNMP Nimble'
+            key: diskTotalBytesUsed.0
+        -
+          sortorder: '1'
+          color: 00C8C8
+          item:
+            host: 'Template SNMP Nimble'
+            key: diskVolBytesUsed.0
+        -
+          sortorder: '2'
+          color: 00C800
+          item:
+            host: 'Template SNMP Nimble'
+            key: diskSnapBytesUsed.0
+    -
+      name: Throughput
+      graph_items:
+        -
+          drawtype: GRADIENT_LINE
+          color: 0000C8
+          item:
+            host: 'Template SNMP Nimble'
+            key: ioReadsBytes
+        -
+          sortorder: '1'
+          drawtype: GRADIENT_LINE
+          color: 00C800
+          item:
+            host: 'Template SNMP Nimble'
+            key: ioWriteBytes
+        -
+          sortorder: '2'
+          color: 00C8C8
+          item:
+            host: 'Template SNMP Nimble'
+            key: ioSeqReadsBytes
+        -
+          sortorder: '3'
+          color: C8C800
+          item:
+            host: 'Template SNMP Nimble'
+            key: ioSeqWriteBytes
+  value_maps:
+    -
+      name: NimbleVolumeState
+      mappings:
+        -
+          value: '1'
+          newvalue: 'True'
+        -
+          value: '2'
+          newvalue: 'False'
